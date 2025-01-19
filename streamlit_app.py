@@ -102,7 +102,7 @@ def generate_form_html_from_config_file(config_file_path):
     return prettify_raw_html(generated_form_html)
 
 def generate_config_file_from_raw_data(raw_data):
-    config_file_path = "config.xlsx" # This needs to be dynamic
+    config_file_path = "wny_config.xlsx" # This needs to be dynamic
     # OpenAI-based config file generator: raw data -> config file
     prompt = """
     You are a helpful data analyst creating configuration files for large excel-based datasets. A configuration file is another excel file that
@@ -115,6 +115,11 @@ def generate_config_file_from_raw_data(raw_data):
     element on a web form, ensure the field_type is 'select'.
     5. 'select_options' should be filled in only when the 'field_type' is 'select'. All unique values for the column in the dataset should be populated here in this case.
     """
+    # TODO: integrate with OpenAI 
+    # Temporary workaround - manual config file
+    response = requests.get("https://github.com/av1kav/UB_RA_WebForms/raw/refs/heads/main/wny_config.xlsx")
+    if response.status_code not in requests.codes.ok:
+        raise ValueError('Could not load file from Github repo.')
     return config_file_path
 
 def generate_html(config_file_path):
