@@ -67,8 +67,8 @@ def generate_html_for_input_group_start():
 def generate_html_for_input_group_end():
     return "</div>"
 
-def generate_form_html_from_config_file(uploaded_file):
-    config_workbook = pd.ExcelFile(uploaded_file)
+def generate_form_html_from_config_file(config_file_path):
+    config_workbook = pd.ExcelFile(config_file_path)
     form_pages = pd.read_excel(config_workbook, 'Pages').set_index('page_number').to_dict(orient='index')
     form_fields = pd.read_excel(config_workbook, 'Fields')
     generated_form_html = """"""
@@ -102,7 +102,7 @@ def generate_form_html_from_config_file(uploaded_file):
     return prettify_raw_html(generated_form_html)
 
 def generate_config_file_from_raw_data(raw_data):
-    config_filepath = "config.xlsx" # This needs to be dynamic
+    config_file_path = "config.xlsx" # This needs to be dynamic
     # OpenAI-based config file generator: raw data -> config file
     prompt = """
     You are a helpful data analyst creating configuration files for large excel-based datasets. A configuration file is another excel file that
@@ -115,16 +115,10 @@ def generate_config_file_from_raw_data(raw_data):
     element on a web form, ensure the field_type is 'select'.
     5. 'select_options' should be filled in only when the 'field_type' is 'select'. All unique values for the column in the dataset should be populated here in this case.
     """
-    return config_filepath 
-
-def generate_configuration_file(uploaded_file):
-    config = generate_config_from_raw_data(uploaded_file)   
-    config.to_excel(config_file_path, index=False)
     return config_file_path
 
-def generate_html(uploaded_file):
+def generate_html(config_file_path):
     # Process the uploaded file and generate HTML
-    generate_configuration_file()    
     html_content = generate_form_html_from_config_file()
     with open(html_file_path, "w") as f:
         f.write(html_content)
@@ -136,14 +130,14 @@ def generate_html(uploaded_file):
 st.title("UB RA Dynamic Form Generator")
 
 # File upload
-uploaded_file = st.file_uploader("Upload an Excel file", type=["xlsx"])
+uploaded_file = st.file_uploader("To begin, upload an Excel dataset.", type=["xlsx"])
 
 if uploaded_file:
     st.success("File uploaded successfully!")
     
     # Button to generate configuration file
     if st.button("Generate Configuration File"):
-        config_file_path = generate_configuration(uploaded_file)
+        config_file_path = generate_config_file_from_raw_data(uploaded_file)
         st.success(f"Configuration file generated: {config_file_path}")
         st.download_button("Download Configuration File", 
                            data=open(config_file_path, "rb").read(), 
@@ -151,7 +145,8 @@ if uploaded_file:
 
     # Button to generate HTML
     if st.button("Generate HTML"):
-        html_file_path = generate_html(uploaded_file)
+        config_file_path = generate_config_file_from_raw_data(uploaded_file)
+        html_file_path = generate_html(config_file_path)
         st.success(f"HTML file generated: {html_file_path}")
         st.download_button("Download HTML File", 
                            data=open(html_file_path, "rb").read(), 
