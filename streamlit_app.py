@@ -124,8 +124,8 @@ def generate_config_file_from_raw_data(raw_data):
     return config_file_path
 
 def generate_html(config_file_path):
-    # Process the uploaded file and generate HTML
-    html_content = generate_form_html_from_config_file()
+    html_content = generate_form_html_from_config_file(config_file_path)
+    html_file_path = "form_content.html"
     with open(html_file_path, "w") as f:
         f.write(html_content)
     return html_file_path
