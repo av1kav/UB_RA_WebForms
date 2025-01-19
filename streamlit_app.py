@@ -119,7 +119,7 @@ def generate_config_file_from_raw_data(raw_data):
     # TODO: integrate with OpenAI 
     # Temporary workaround - manual config file
     response = requests.get("https://github.com/av1kav/UB_RA_WebForms/raw/refs/heads/main/wny_config.xlsx")
-    if response.status_code not in requests.codes.ok:
+    if response.status_code != requests.codes.ok:
         raise ValueError('Could not load file from Github repo.')
     return config_file_path
 
