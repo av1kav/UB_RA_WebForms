@@ -6,6 +6,7 @@ import pandas as pd
 import numpy as np
 import os
 from pprint import pprint
+import requests
 from bs4 import BeautifulSoup as soup
 
 def prettify_raw_html(html_string, engine='bs4'):
