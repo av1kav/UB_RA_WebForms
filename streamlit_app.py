@@ -158,6 +158,8 @@ elif choice == "Create new config from dataset":
                 st.download_button("Download Configuration File", 
                                    data=open(config_file_path, "rb").read(), 
                                    file_name="form_configuration.xlsx")
+            else:
+                st.info("Please upload an Excel file to get started.")
 # Generate HTML from config file
 st.text("Use the button below to dynamically generate HTML for the provided config file.")
 if st.button("Generate HTML"):
@@ -167,5 +169,4 @@ if st.button("Generate HTML"):
     st.download_button("Download HTML File", 
                        data=open(html_file_path, "rb").read(), 
                        file_name="form_content.html")
-    else:
-        st.info("Please upload an Excel file to get started.")
+
