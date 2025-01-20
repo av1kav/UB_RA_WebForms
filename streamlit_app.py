@@ -172,5 +172,5 @@ if st.button("Generate HTML"):
                            data=open(html_file_path, "rb").read(), 
                            file_name="form_content.html")
     else:
-        st.info('Upload a file first.)
+        st.info('Upload a file first.')
     
