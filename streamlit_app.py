@@ -79,7 +79,7 @@ elif choice == "Create new config from dataset":
         st.session_state['dataset_uploaded'] = True
         # Button to generate configuration file
         if st.session_state['dataset_uploaded']:
-            if st.button("Generate Configuration File")
+            if st.button("Generate Configuration File"):
                 st.session_state['config_file_path'] = generate_config_file_from_raw_data(uploaded_file)
                 config_file_path = st.session_state['config_file_path']
                 st.success(f"Configuration file generated: {config_file_path}")
