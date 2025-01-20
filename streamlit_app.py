@@ -155,6 +155,7 @@ elif choice == "Create new config from dataset":
         # Button to generate configuration file
         if st.button("Generate Configuration File"):
             st.session_state['config_file_path'] = generate_config_file_from_raw_data(uploaded_file)
+            config_file_path = st.session_state['config_file_path']
             st.success(f"Configuration file generated: {config_file_path}")
             st.download_button("Download Configuration File", 
                                data=open(config_file_path, "rb").read(), 
