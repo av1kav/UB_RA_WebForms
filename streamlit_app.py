@@ -85,3 +85,5 @@ if st.session_state['config_file_path']:
     config_file_path = st.session_state['config_file_path']
     if st.button("Sync changes with web form"):
             POST_config_file_to_remote(config_file_path)
+else:
+    st.text(st.session_state['config_file_path']
