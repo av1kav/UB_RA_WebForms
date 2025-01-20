@@ -92,4 +92,4 @@ if st.session_state['config_file_path']:
     st.text("Use the button below to sync the selected configuration file to the server.")
     config_file_path = st.session_state['config_file_path']
     if st.button("Sync changes with web form"):
-            POST_to_remote(config_file_path)
+            POST_config_file_to_remote(config_file_path)
