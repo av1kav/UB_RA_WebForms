@@ -143,32 +143,33 @@ choice = st.radio(
 )
 
 # Choose between using existing config and making a new one from a dataset
-config_file_path = None
+st.session_state['config_file_path'] = None
 if choice == "Use existing config":
     st.markdown("### Upload Configuration File")
     uploaded_file = st.file_uploader("Upload your config file here.", type=["xlsx"])
-    config_file_path = "wny_config.xlsx" # A default placeholder
+    st.session_state['config_file_path'] = "wny_config.xlsx" # A default placeholder
 elif choice == "Create new config from dataset":
-    if st.button("Create new config"):
-        uploaded_file = st.file_uploader("Upload your dataset here (MS Excel format only).", type=["xlsx"])
-        if uploaded_file:
-            st.success("File uploaded successfully!")   
-            # Button to generate configuration file
-            if st.button("Generate Configuration File"):
-                config_file_path = generate_config_file_from_raw_data(uploaded_file)
-                st.success(f"Configuration file generated: {config_file_path}")
-                st.download_button("Download Configuration File", 
-                                   data=open(config_file_path, "rb").read(), 
-                                   file_name="form_configuration.xlsx")
-            else:
-                st.info("Please upload an Excel file to get started.")
-# Generate HTML from config file
-st.text("Use the button below to dynamically generate HTML for the provided config file.")
-if st.button("Generate HTML"):
-    config_file_path = "wny_config.xlsx" # A default placeholder
-    html_file_path = generate_html(config_file_path)
-    st.success(f"HTML file generated: {html_file_path}")
-    st.download_button("Download HTML File", 
-                       data=open(html_file_path, "rb").read(), 
-                       file_name="form_content.html")
+    uploaded_file = st.file_uploader("Upload your dataset here (MS Excel format only).", type=["xlsx"])
+    if uploaded_file:
+        st.success("File uploaded successfully!")   
+        # Button to generate configuration file
+        if st.button("Generate Configuration File"):
+            st.session_state['config_file_path'] = generate_config_file_from_raw_data(uploaded_file)
+            st.success(f"Configuration file generated: {config_file_path}")
+            st.download_button("Download Configuration File", 
+                               data=open(config_file_path, "rb").read(), 
+                               file_name="form_configuration.xlsx")
+        else:
+            st.info("Please upload an Excel file to get started.")
+            
+# Generate HTML from config file if either option has been completed
+if st.session_state['config_file_path']:
+    st.text("Use the button below to dynamically generate HTML for the provided config file.")
+    if st.button("Generate HTML"):
+        config_file_path = st.session_state['config_file_path']
+        html_file_path = generate_html(config_file_path)
+        st.success(f"HTML file generated: {html_file_path}")
+        st.download_button("Download HTML File", 
+                           data=open(html_file_path, "rb").read(), 
+                           file_name="form_content.html")
 
