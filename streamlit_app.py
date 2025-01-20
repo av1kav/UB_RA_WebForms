@@ -62,6 +62,8 @@ choice = st.radio(
 
 # Choose between using existing config and making a new one from a dataset
 st.session_state['config_file_path'] = None
+st.session_state['dataset_uploaded'] = False
+
 if choice == "Use existing config":
     st.markdown("### Upload Existing Configuration File")
     uploaded_file = st.file_uploader("Upload your config file here.", type=["xlsx"])
