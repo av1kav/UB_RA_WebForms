@@ -8,6 +8,7 @@ import os
 from pprint import pprint
 import requests
 from bs4 import BeautifulSoup as soup
+from urllib.parse import urljoin
 
 def prettify_raw_html(html_string, engine='bs4'):
     if engine == 'bs4':
@@ -130,7 +131,29 @@ def generate_html(config_file_path):
         f.write(html_content)
     return html_file_path
 
+def POST_to_remote(html_file_path):
 
+    api_token = "36659696571bc93c68080be5042209b10663018b"
+    username = "avenugopal"
+    pythonanywhere_host = "www.pythonanywhere.com"
+
+    api_base = "https://{pythonanywhere_host}/api/v0/user/{username}/".format(
+        pythonanywhere_host=pythonanywhere_host,
+        username=username,
+    )
+    
+    html_content = ""
+    with open(html_file_path, "r") as handle:
+            html_content = handle.read()
+    
+    with st.spinner(text="Updating dynamic web form on remote..."):
+        resp = requests.post(
+            urljoin(api_base, "files/path/home/{username}/form_content.html".format(username=username)),
+            files={"content": html_content},
+            headers={"Authorization": "Token {api_token}".format(api_token=api_token)}
+        )
+        st.success("Form configuration updated.")
+    
 ########### Streamlit App ###########
 
 st.title("UB RA Dynamic Form Generator")
@@ -166,8 +189,9 @@ if st.session_state['config_file_path']:
     st.text("Use the button below to dynamically generate HTML for the provided config file.")
     config_file_path = st.session_state['config_file_path']
     html_file_path = generate_html(config_file_path)
-    st.success(f"HTML file generated: {html_file_path}")
     st.download_button("Download HTML File", 
                        data=open(html_file_path, "rb").read(), 
                        file_name="form_content.html")
+    if st.button("Sync changes with web form"):
+        POST_to_remote(html_file_path)
 
