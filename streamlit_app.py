@@ -162,8 +162,8 @@ elif choice == "Create new config from dataset":
                                file_name="form_configuration.xlsx")
             
 # Generate HTML from config file if either option has been completed
-st.text("Use the button below to dynamically generate HTML for the provided config file.")
 if st.session_state['config_file_path']:
+    st.text("Use the button below to dynamically generate HTML for the provided config file.")
     config_file_path = st.session_state['config_file_path']
     html_file_path = generate_html(config_file_path)
     st.success(f"HTML file generated: {html_file_path}")
