@@ -43,7 +43,7 @@ def POST_config_file_to_remote(config_file_path):
     
     with st.spinner(text="Updating dynamic web form on remote..."):
         response = requests.post(
-            urljoin(api_base, "files/path/home/{username}/form_content.html".format(username=username)),
+            urljoin(api_base, "files/path/home/{username}/wny_config.xlsx".format(username=username)),
             files={"content": config_file_path.read() },
             headers={"Authorization": "Token {api_token}".format(api_token=api_token)}
         )
@@ -67,7 +67,7 @@ if choice == "Use existing config":
     uploaded_file = st.file_uploader("Upload your config file here.", type=["xlsx"])
     st.session_state['config_file_path'] = uploaded_file
 elif choice == "Create new config from dataset":
-    st.markdown("### Upload Existing Configuration File")
+    st.markdown("### Upload Dataset")
     uploaded_file = st.file_uploader("Upload your dataset here (MS Excel format only).", type=["xlsx"])
     if uploaded_file:
         st.success("File uploaded successfully!") 
