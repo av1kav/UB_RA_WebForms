@@ -170,7 +170,7 @@ st.session_state['config_file_path'] = None
 if choice == "Use existing config":
     st.markdown("### Upload Configuration File")
     uploaded_file = st.file_uploader("Upload your config file here.", type=["xlsx"])
-    st.session_state['config_file_path'] = "wny_config.xlsx" # A default placeholder
+    st.session_state['config_file_path'] = uploaded_file
 elif choice == "Create new config from dataset":
     uploaded_file = st.file_uploader("Upload your dataset here (MS Excel format only).", type=["xlsx"])
     if uploaded_file:
