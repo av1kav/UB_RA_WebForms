@@ -60,10 +60,13 @@ choice = st.radio(
     index=1
 )
 
-# Choose between using existing config and making a new one from a dataset
-st.session_state['config_file_path'] = None
-st.session_state['dataset_uploaded'] = False
+# Initialize session state keys
+if 'config_file_path' not in st.session_state:
+    st.session_state['config_file_path'] = None
+if 'dataset_uploaded' not in st.session_state:
+    st.session_state['dataset_uploaded'] = False
 
+# Choose between using existing config and making a new one from a dataset
 if choice == "Use existing config":
     st.markdown("### Upload Existing Configuration File")
     uploaded_file = st.file_uploader("Upload your config file here.", type=["xlsx"])
@@ -79,10 +82,19 @@ elif choice == "Create new config from dataset":
             st.download_button("Download Configuration File", data=open(config_file_path, "rb").read(),file_name="form_configuration.xlsx")
 
 # Once a config is created/uploaded, sync it to the web server
+# Sync configuration file to the server
 if st.session_state['config_file_path']:
+    st.markdown("### Sync Configuration to Server")
     st.text("Use the button below to sync the selected configuration file to the server.")
-    config_file = st.session_state['config_file_path']
+    
+    # Distinguish between uploaded and generated files
+    if isinstance(st.session_state['config_file_path'], str):
+        config_file = st.session_state['config_file_path']
+    else:
+        config_file = st.session_state['config_file_path'].name
+
     if st.button("Sync changes with web form"):
         POST_config_file_to_remote(config_file)
+        st.success("Configuration file successfully synced to the web form.")
 else:
-    st.text("No configuration file selected.")
+    st.markdown("No configuration file selected. Please upload or generate one.")
