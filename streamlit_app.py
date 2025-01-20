@@ -41,15 +41,14 @@ def POST_config_file_to_remote(config_file_path):
         pythonanywhere_host=pythonanywhere_host,
         username=username,
     )
-    
-    html_content = ""
-    with open(html_file_path, "r") as handle:
-            html_content = handle.read()
+    config_file_raw = ""
+    with open(config_file_path, "rb") as handle:
+            config_file_raw = handle.read()
     
     with st.spinner(text="Updating dynamic web form on remote..."):
         resp = requests.post(
             urljoin(api_base, "files/path/home/{username}/form_content.html".format(username=username)),
-            files={"content": html_content},
+            files={"content": config_file_raw},
             headers={"Authorization": "Token {api_token}".format(api_token=api_token)}
         )
         st.success("Form configuration updated.")
