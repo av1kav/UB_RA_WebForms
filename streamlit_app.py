@@ -147,7 +147,6 @@ config_file_path = None
 if choice == "Use existing config":
     st.markdown("### Upload Configuration File")
     uploaded_file = st.file_uploader("Upload your config file here.", type=["xlsx"])
-    global config_file_path
     config_file_path = "wny_config.xlsx" # A default placeholder
 elif choice == "Create new config from dataset":
     if st.button("Create new config"):
@@ -156,7 +155,6 @@ elif choice == "Create new config from dataset":
             st.success("File uploaded successfully!")   
             # Button to generate configuration file
             if st.button("Generate Configuration File"):
-                global config_file_path
                 config_file_path = generate_config_file_from_raw_data(uploaded_file)
                 st.success(f"Configuration file generated: {config_file_path}")
                 st.download_button("Download Configuration File", 
@@ -167,7 +165,7 @@ elif choice == "Create new config from dataset":
 # Generate HTML from config file
 st.text("Use the button below to dynamically generate HTML for the provided config file.")
 if st.button("Generate HTML"):
-    global config_file_path
+    config_file_path = "wny_config.xlsx" # A default placeholder
     html_file_path = generate_html(config_file_path)
     st.success(f"HTML file generated: {html_file_path}")
     st.download_button("Download HTML File", 
