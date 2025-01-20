@@ -44,7 +44,7 @@ def POST_config_file_to_remote(config_file_path):
     with st.spinner(text="Updating dynamic web form on remote..."):
         response = requests.post(
             urljoin(api_base, "files/path/home/{username}/wny_config.xlsx".format(username=username)),
-            files={"content": config_file_path.read() },
+            files={"content": open(config_file_path, "rb").read() },
             headers={"Authorization": "Token {api_token}".format(api_token=api_token)}
         )
         st.success("Form configuration updated.")
