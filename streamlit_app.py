@@ -189,9 +189,12 @@ if st.session_state['config_file_path']:
     st.text("Use the button below to dynamically generate HTML for the provided config file.")
     config_file_path = st.session_state['config_file_path']
     html_file_path = generate_html(config_file_path)
-    st.download_button("Download HTML File", 
-                       data=open(html_file_path, "rb").read(), 
-                       file_name="form_content.html")
-    if st.button("Sync changes with web form"):
-        POST_to_remote(html_file_path)
+    col1, col2 = st.columns([1,1])
+    with col1:
+        st.download_button("Download HTML File", 
+                           data=open(html_file_path, "rb").read(), 
+                           file_name="form_content.html")
+    with col2:
+        if st.button("Sync changes with web form"):
+            POST_to_remote(html_file_path)
 
