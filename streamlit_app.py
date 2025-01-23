@@ -9,6 +9,7 @@ from pprint import pprint
 import requests
 from bs4 import BeautifulSoup as soup
 from urllib.parse import urljoin
+import time
 
 def generate_config_file_from_raw_data(raw_data):
     config_file_path = "wny_config.xlsx" # This needs to be dynamic
@@ -42,6 +43,7 @@ def POST_config_file_to_remote(config_file_path):
     )
     
     with st.spinner(text="Updating dynamic web form on remote..."):
+        time.sleep(3)
         response = requests.post(
             urljoin(api_base, "files/path/home/{username}/wny_config.xlsx".format(username=username)),
             files={"content": open(config_file_path, "rb").read() },
